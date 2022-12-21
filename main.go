@@ -1,18 +1,9 @@
 package main
 
 import (
-	"net/http"
-
-	"github.com/gin-gonic/gin"
+	"sales/server"
 )
 
 func main(){
-	router:=gin.Default()
-	router.GET("/",func(c *gin.Context){
-		c.JSON(http.StatusOK,gin.H{
-			"name":"test",
-		})
-	})
-
-	router.Run(":80")
+	server.StartServe()
 }
