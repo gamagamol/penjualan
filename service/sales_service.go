@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-
+// test
 func (s *service)GetSales()(entity.SalesResponse,error){
 	return s.r.GetSales()
 }

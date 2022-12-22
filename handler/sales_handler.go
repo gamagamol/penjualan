@@ -10,7 +10,7 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-
+// test
 func (h handler)GetSales(c *gin.Context){
 	res,err:=h.s.GetSales()
 	if err!=nil{

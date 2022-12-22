@@ -8,6 +8,8 @@ import (
 
 // sales
 
+// test
+
 func (r *repostory)GetSales()(entity.SalesResponse,error){
 	
 		var sales []entity.SalesJoinResponse
