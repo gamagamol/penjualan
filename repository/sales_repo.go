@@ -6,6 +6,7 @@ import (
 	"sales/entity"
 )
 
+// sales
 
 func (r *repostory)GetSales()(entity.SalesResponse,error){
 	
