@@ -3,16 +3,19 @@ package entity
 import "time"
 
 type BookResponse struct{
-	Status int `json:"status"`
+	Status 	int `json:"status"`
 	Message string `json:"message"`
-	Detail BookRequest
+	Data	*[]Book
+	Detail  *BookRequest
+	
 }
 
 
 type UserResponse struct{
 	Status int `json:"status"`
 	Message string `json:"message"`
-	Detail *UserRequest
+	Detail *UserRequest	`json:"detail,omitempty"`
+	Login *LoginRequest `json:"login,omitempty"`
 }
 
 type SalesJoinResponse struct{
@@ -31,5 +34,7 @@ type SalesResponse struct{
 	Data *[]SalesJoinResponse `json:"data,omitempty"`
 	Detail *SalesRequest `json:"detail,omitempty"`
 }
+
+
 
 

@@ -1,9 +1,12 @@
 package repository
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"sales/entity"
+
+	"gorm.io/gorm"
 )
 
 func(r *repostory) GetUser()(*[]entity.User,error){
@@ -13,14 +16,16 @@ func(r *repostory) GetUser()(*[]entity.User,error){
 	return &User,err
 }
 
-func (r *repostory)UserGetById(id int)(entity.UserResponse,error){
+func (r *repostory)UserGetById(id int,ussername string)(entity.UserResponse,error){
 	var user entity.User
+	var err error
 
-	err:=r.db.Find(&user,id).Error
-	if err!=nil{
-		fmt.Println("error di repo")
-		fmt.Println(err)
-	}
+	if ussername==""{
+		err=r.db.Find(&user,id).Error
+			if err!=nil{
+				fmt.Println("error di repo")
+				fmt.Println(err)
+			}	
 
 	return entity.UserResponse{
 		Status: http.StatusOK,
@@ -31,6 +36,26 @@ func (r *repostory)UserGetById(id int)(entity.UserResponse,error){
 			Password: user.Password,
 		},
 	},err
+	}else{
+
+		err=r.db.Where("ussername",ussername).Find(&user).Error
+			if errors.Is(err,gorm.ErrRecordNotFound){
+
+				return entity.UserResponse{},err
+			}
+			
+	return entity.UserResponse{
+		Status: http.StatusOK,
+		Message: "ok",
+		Login: &entity.LoginRequest{
+			Ussername: user.Ussername,
+			Password: user.Password,
+		},
+	},err	
+	}
+
+	
+
 
 }
 
@@ -74,7 +99,7 @@ func (r *repostory)UserDelete(id int,req entity.User)(entity.UserResponse,error)
 	
 	err:=r.db.Where("id_user",id).Omit("created_at","updated_at").Save(&req).Error
 
-	detail,er:=r.UserGetById(id)
+	detail,er:=r.UserGetById(id,"")
 
 	if er !=nil{
 		fmt.Println(er)

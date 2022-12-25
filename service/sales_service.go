@@ -49,3 +49,5 @@ func (s *service)SalesUpdate(id int,req entity.SalesRequest)(entity.SalesRespons
 func (s *service)GetSalesById(id int)(entity.SalesResponse,error){
 	return s.r.GetSalesById(id)
 }
+
+

@@ -15,7 +15,7 @@ type Repository interface{
 	Update(dat entity.Book)(entity.BookResponse,error)
 	// user repo
 	GetUser()(*[]entity.User,error)
-	UserGetById(id int)(entity.UserResponse,error)
+	UserGetById(id int,ussername string)(entity.UserResponse,error)
 	UserInsert(data entity.User)(entity.UserResponse,error)
 	UserUpdate(id int, data entity.User)(entity.UserResponse,error)
 	UserDelete(id int,data entity.User)(entity.UserResponse,error)

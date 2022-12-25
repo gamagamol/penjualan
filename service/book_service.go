@@ -11,9 +11,24 @@ import (
 
 
 
-func (s *service) GetAll()([]entity.Book,error){
+func (s *service) GetAll()(entity.BookResponse,error){
 	
-	return s.r.GetAll()
+	data,err:=s.r.GetAll()
+
+	if err!=nil{
+		fmt.Println(err)
+	}
+
+	res:=entity.BookResponse{
+		Message: "ok",
+		Status: http.StatusOK,
+		Data: &data,
+	}
+
+	fmt.Println(res)
+
+	return res,err
+
 }
 
 

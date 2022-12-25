@@ -14,7 +14,13 @@ type User struct{
 }
 
 type UserRequest struct{
-	Name string			`json:"name" binding:"required"`
+	Name string			`json:"name,omitempty" binding:"required"`
+	Ussername string	`json:"ussername" binding:"required"`
+	Password string		`json:"password" binding:"required"`
+}
+
+
+type LoginRequest struct{
 	Ussername string	`json:"ussername" binding:"required"`
 	Password string		`json:"password" binding:"required"`
 }

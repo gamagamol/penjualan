@@ -3,8 +3,11 @@ package service
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"sales/entity"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 
@@ -15,10 +18,13 @@ func (s *service)GetUser()(*[]entity.User,error){
 
 func (s *service)UserInsert(data entity.UserRequest)(entity.UserResponse,error){
 	
+	// hash password
+	pass,_:=bcrypt.GenerateFromPassword([]byte(data.Password),bcrypt.DefaultCost)
+
 	user:=entity.User{
 		Name: data.Name,
 		Ussername: data.Ussername,
-		Password: data.Password,
+		Password: string(pass),
 		CreatedAt: time.Now(),
 	}
 
@@ -56,14 +62,39 @@ func (s *service)UserUpdate(id int,data entity.UserRequest)(entity.UserResponse,
 
 }
 
-func (s *service) UserGetById(id int)(entity.UserResponse,error){
+func (s *service) UserGetById(id int,req entity.LoginRequest)(entity.UserResponse,error){
 
-	return s.r.UserGetById(id)
+	if req.Ussername ==""{
+	return s.r.UserGetById(id,"")
+
+	}else{
+
+		data,err:=s.r.UserGetById(id,req.Ussername)
+		// check ussername
+		fmt.Println(err)
+		if err !=nil{
+			return entity.UserResponse{
+				Status: http.StatusBadRequest,
+				Message: "Wrong ussername",
+			},err
+		}
+		// check password
+		err=bcrypt.CompareHashAndPassword([]byte(data.Login.Password),[]byte(req.Password))		
+		if err!=nil{
+			return entity.UserResponse{
+				Status: http.StatusBadRequest,
+				Message: "Wrong Password or Email",
+			},err
+		}
+
+		return data,nil
+
+	}
 }
 
 func (s *service)UserDelete(id int)(entity.UserResponse,error){
 
-	req,err:=s.UserGetById(id)
+	req,err:=s.r.UserGetById(id,"")
 	if err !=nil {
 		fmt.Println(err)
 	}
@@ -75,10 +106,10 @@ func (s *service)UserDelete(id int)(entity.UserResponse,error){
 		Password: req.Detail.Password,
 		DeletedAt: time.Now(),
 	}
-
-
-
 	return s.r.UserDelete(id,data)
+}
 
 
+func (s *service)Test()string{
+return "Hello World"
 }

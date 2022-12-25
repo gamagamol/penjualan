@@ -11,6 +11,7 @@ import (
 )
 
 // test
+
 func (h handler)GetSales(c *gin.Context){
 	res,err:=h.s.GetSales()
 	if err!=nil{

@@ -23,7 +23,7 @@ func (r *repostory) Insert(data entity.Book)(entity.BookResponse,error){
 	book:=entity.BookResponse{
 		Status: http.StatusCreated,
 		Message: fmt.Sprintf("Success Insert New Book (%s)",data.Title),
-		Detail: entity.BookRequest{
+		Detail: &entity.BookRequest{
 			Title: data.Title,
 			Price: data.Price,
 			Stock: data.Stock,	
@@ -42,7 +42,7 @@ func (r *repostory)GetbyId(id int)(entity.BookResponse,error){
 	bookResponse:=entity.BookResponse{
 		Status: http.StatusOK,
 		Message: "Book Finded",
-		Detail: entity.BookRequest{
+		Detail: &entity.BookRequest{
 			Title: book.Title,
 			Price: book.Price,
 			Stock: book.Stock,
@@ -57,7 +57,7 @@ func (r *repostory)Update(data entity.Book)(entity.BookResponse,error){
 	book:=entity.BookResponse{
 		Status: http.StatusOK,
 		Message: "Book Has been Updated",
-		Detail: entity.BookRequest{
+		Detail: &entity.BookRequest{
 			Title: data.Title,
 			Price: data.Price,
 			Stock: data.Stock,

@@ -35,6 +35,7 @@ func StartServe(){
 	// user Handler
 	router.GET("/user",handler.GetUser)
 	router.GET("/user/:id",handler.UserGetById)
+	router.GET("/user/login",handler.Login)
 	router.POST("/user/insert",handler.InsertUser)
 	router.PUT("/user/update",handler.UserUpdate)
 	router.DELETE("/user/delete",handler.UserDelete)
@@ -44,5 +45,8 @@ func StartServe(){
 	router.GET("/sales/:id",handler.GetSalesById)
 	router.POST("/sales/insert",handler.SalesInsert)
 	router.PUT("/sales/update",handler.SalesUpdate)
+
+
+	router.GET("/test",handler.Test)
 	router.Run(":80")
 }

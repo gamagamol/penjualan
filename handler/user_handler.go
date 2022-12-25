@@ -50,7 +50,7 @@ func (h handler)InsertUser(c *gin.Context){
 func (h handler)UserGetById(c *gin.Context){
 	id,_:=strconv.Atoi(c.Param("id"))
 
-	res,err:=h.s.UserGetById(id)
+		res,err:=h.s.UserGetById(id,entity.LoginRequest{})
 
 	if err!=nil{
 		fmt.Println(err)
@@ -59,6 +59,24 @@ func (h handler)UserGetById(c *gin.Context){
 	c.JSON(http.StatusOK,res)
 
 
+}
+
+func (h handler)Login(c *gin.Context){
+	ussername:=c.Query("ussername")
+	password:=c.Query("password")
+
+	req:=entity.LoginRequest{
+		Ussername: ussername,
+		Password: password,
+	}
+
+	res,err:=h.s.UserGetById(0,req)
+
+	if err!=nil{
+		fmt.Println(err)
+	}
+
+	c.JSON(http.StatusOK,res)
 }
 
 func (h handler)UserUpdate(c *gin.Context){
@@ -95,4 +113,14 @@ func (h handler)UserDelete(c *gin.Context){
 
 	c.JSON(http.StatusOK,res)
 
+}
+
+
+
+func (h handler)Test(c *gin.Context){
+
+
+	c.JSON(http.StatusOK,gin.H{
+		"Message":h.s.Test(),
+	})
 }
