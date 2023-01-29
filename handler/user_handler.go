@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"sales/entity"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -76,6 +77,8 @@ func (h handler)Login(c *gin.Context){
 		fmt.Println(err)
 	}
 
+	c.SetCookie("Aut",*res.Token,time.Now().Minute(),"","",false,true)
+
 	c.JSON(http.StatusOK,res)
 }
 
@@ -97,7 +100,6 @@ func (h handler)UserUpdate(c *gin.Context){
 
 	c.JSON(http.StatusOK,res)
 
-
 }
 
 
@@ -117,10 +119,3 @@ func (h handler)UserDelete(c *gin.Context){
 
 
 
-func (h handler)Test(c *gin.Context){
-
-
-	c.JSON(http.StatusOK,gin.H{
-		"Message":h.s.Test(),
-	})
-}

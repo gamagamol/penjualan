@@ -16,6 +16,8 @@ type UserResponse struct{
 	Message string `json:"message"`
 	Detail *UserRequest	`json:"detail,omitempty"`
 	Login *LoginRequest `json:"login,omitempty"`
+	Token *string		`json:"token,omitempty"`
+
 }
 
 type SalesJoinResponse struct{
@@ -33,6 +35,7 @@ type SalesResponse struct{
 	Message string `json:"message"`
 	Data *[]SalesJoinResponse `json:"data,omitempty"`
 	Detail *SalesRequest `json:"detail,omitempty"`
+	
 }
 
 

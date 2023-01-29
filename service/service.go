@@ -27,7 +27,6 @@ type Service interface{
 	SalesUpdate(id int,data entity.SalesRequest)(entity.SalesResponse,error)
 
 
-	Test()string
 
 }
 

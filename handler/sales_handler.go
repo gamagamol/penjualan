@@ -50,8 +50,11 @@ func (h handler)SalesInsert(c *gin.Context){
 	if er!=nil{
 		fmt.Println(er)
 	}
+	
 
 	c.JSON(http.StatusCreated,res)
+
+	
 
 }
 

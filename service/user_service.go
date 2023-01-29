@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"sales/config"
 	"sales/entity"
 	"time"
 
+	"github.com/golang-jwt/jwt/v4"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -71,7 +73,6 @@ func (s *service) UserGetById(id int,req entity.LoginRequest)(entity.UserRespons
 
 		data,err:=s.r.UserGetById(id,req.Ussername)
 		// check ussername
-		fmt.Println(err)
 		if err !=nil{
 			return entity.UserResponse{
 				Status: http.StatusBadRequest,
@@ -86,6 +87,46 @@ func (s *service) UserGetById(id int,req entity.LoginRequest)(entity.UserRespons
 				Message: "Wrong Password or Email",
 			},err
 		}
+
+		// created jwt
+		// exp:=time.Now().Add(time.Minute*1)
+		// claims:=&config.JWTCLAIM{
+		// 	Key: []byte("test"),
+		// 	Ussername: req.Ussername,
+		// 	RegisteredClaims: jwt.RegisteredClaims{
+		// 			Issuer: "go-jwt",
+		// 			ExpiresAt: jwt.NewNumericDate(exp),
+		// 	},
+		// }
+
+		// // create Algo
+		// tokenAlgo:=jwt.NewWithClaims(jwt.SigningMethodES256,claims)
+
+
+
+		// token,err:=tokenAlgo.SignedString([]byte("test"))
+		// if err!=nil{
+		// 	panic(err)
+		// }
+
+		// data.Token=&token
+
+
+		token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+			"sub":data.Login.Ussername,
+			"exp":time.Now().Add(time.Minute*1).Unix(),
+		})
+
+		// secret:=[]byte("asdasd21whhjkhkjasd")
+		// fmt.Println(secret)
+		// fmt.Println(config.JWT_KEY)
+		// Sign and get the complete encoded token as a string using the secret
+		tokenString, err := token.SignedString(config.JWT_KEY)
+
+		if err!=nil {
+			panic(err)
+		}
+		data.Token=&tokenString
 
 		return data,nil
 
